@@ -1,0 +1,17 @@
+.p-button,
+.p-selectbutton .p-button.p-highlight {
+  background: $btnColor;
+  border-color: $btnColor;
+  &:hover,
+  &:enabled:hover {
+    background: $btnColorHover;
+    border-color: $btnColorHover;
+  }
+}
+
+.p-button.p-button-text {
+  color: $btnColor;
+  &:enabled:hover {
+    color: $btnColorHover;
+  }
+}

@@ -1,0 +1,86 @@
+<div class="layout-topbar">
+  <a class="layout-topbar-logo" routerLink="">
+    <span>ENCOVIZ</span>
+  </a>
+
+  <a class="p-link layout-menu-button layout-topbar-button" href="#" (click)="appMain.toggleMenu($event)">
+    <i class="pi pi-bars"></i>
+  </a>
+
+  <a class="p-link layout-topbar-menu-button layout-topbar-button" href="#" (click)="appMain.toggleTopMenu($event)">
+    <i class="pi pi-ellipsis-v"></i>
+  </a>
+
+  <div
+    class="layout-topbar-menu"
+    [ngClass]="{
+      'layout-topbar-menu-mobile-active': appMain.topMenuActive
+    }"
+  >
+    <ul class="layout-topbar-actions">
+      <li
+        class="topbar-item user-profile"
+        [ngClass]="{
+          'active-topmenuitem': toggleUserMenu
+        }"
+      >
+        <a href="#" (click)="openUserMenu($event)">
+          <p-avatar icon="pi pi-user" shape="circle"></p-avatar>
+          <div class="profile-info" [ngClass]="{ 'align-self-center': !userProfile?.firstName || !userProfile?.lastName }">
+            <h6>{{ userProfile?.username }}</h6>
+            <span>{{ (userProfile?.firstName ?? '') + ' ' + (userProfile?.lastName ?? '') }}</span>
+          </div>
+        </a>
+        <ul class="fadeInDown">
+          <li class="menuitem">
+            <div class="flex align-items-center mt-1">
+              <button
+                icon="pi pi-minus"
+                type="button"
+                pButton
+                (click)="decrementScale()"
+                class="p-button-text p-button-rounded w-2rem h-2rem mr-2"
+                [disabled]="scale === scales[0]"
+              ></button>
+              <div class="flex gap-2 align-items-center">
+                <i class="pi pi-circle-fill text-300" *ngFor="let s of scales" [ngClass]="{ 'text-primary-500': s === scale }"></i>
+              </div>
+              <button
+                icon="pi pi-plus"
+                type="button"
+                pButton
+                (click)="incrementScale()"
+                class="p-button-text p-button-rounded w-2rem h-2rem ml-2"
+                [disabled]="scale === scales[scales.length - 1]"
+              ></button>
+            </div>
+          </li>
+          <li role="menuitem">
+            <a (click)="accountManagement()" target="_blank">
+              <i class="pi pi-user-edit"></i>
+              <h6>Manage Account</h6>
+            </a>
+          </li>
+          <li role="menuitem">
+            <a (click)="logout($event)">
+              <i class="pi pi-power-off"></i>
+              <h6>Logout</h6>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="topbar-item mobile-action">
+        <a (click)="accountManagement()" target="_blank">
+          <i class="pi pi-user-edit"></i>
+          <h6>Manage Account</h6>
+        </a>
+      </li>
+      <li class="topbar-item mobile-action">
+        <a (click)="logout($event)">
+          <i class="pi pi-power-off"></i>
+          <h6>Logout</h6>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

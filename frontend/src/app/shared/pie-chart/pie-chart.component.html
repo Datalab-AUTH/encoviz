@@ -1,0 +1,3 @@
+<app-chart-area [title]="'Consumption per Device (in kWh)'">
+  <p-chart type="pie" [data]="pieData$ | async" [options]="pieOptions" [responsive]="true" [style]="{ width: '50%' }"></p-chart>
+</app-chart-area>

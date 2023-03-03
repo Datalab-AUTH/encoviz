@@ -1,0 +1,11 @@
+<div class="grid">
+  <div class="col-12">
+    <app-overview-panel *ngIf="selectedOptions?.minDate" [selectedDate]="selectedOptions?.minDate"></app-overview-panel>
+  </div>
+  <div class="col-12">
+    <div class="card">
+      <app-chart-toolbar [devices]="devices$ | async" (updateChartOptions)="updateChart($event)"></app-chart-toolbar>
+      <app-combo-chart [data$]="data$" [selectedOptions]="selectedOptions"></app-combo-chart>
+    </div>
+  </div>
+</div>

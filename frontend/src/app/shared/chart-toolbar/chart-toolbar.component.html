@@ -1,0 +1,58 @@
+<div
+  class="flex flex-column align-items-center md:h-auto justify-content-between py-3"
+  [ngClass]="{ 'full-height': devices && users, 'xl:flex-row': displayInRow, 'toolbar-height': devices || users }"
+  [ngStyle]="{ 'min-height': !displayInRow ? '8rem' : '' }"
+>
+  <span class="p-float-label">
+    <p-calendar
+      [(ngModel)]="selectedDate"
+      [showIcon]="true"
+      inputId="date"
+      id="date"
+      [readonlyInput]="true"
+      [minDate]="minDate"
+      [maxDate]="maxDate"
+      dataType="string"
+      dateFormat="yy-mm-dd"
+      (onSelect)="updateChart()"
+    ></p-calendar>
+    <label for="date">Starting Date</label>
+  </span>
+
+  <p-selectButton [options]="periodOptions" [(ngModel)]="selectedTimeUnit" (onChange)="updateChart($event.value)"></p-selectButton>
+
+  <span *ngIf="users" class="p-float-label">
+    <p-dropdown
+      [options]="users"
+      [(ngModel)]="selectedUser"
+      optionLabel="username"
+      id="userId"
+      optionValue="id"
+      [filter]="true"
+      [showClear]="true"
+      [autoDisplayFirst]="false"
+      (onChange)="clearDevices(); updateChart(null, null, $event.value)"
+    >
+    </p-dropdown>
+    <label for="device">Client's Username</label>
+  </span>
+  <div>
+    <span *ngIf="devices" class="p-float-label">
+      <p-dropdown
+        [options]="devices"
+        [(ngModel)]="selectedDevice"
+        optionLabel="name"
+        id="device"
+        optionValue="id"
+        [filter]="true"
+        [showClear]="true"
+        [autoDisplayFirst]="false"
+        (onChange)="updateChart(null, $event.value)"
+        [styleClass]="isDeviceMandatory && !selectedDevice ? 'border-red-500' : ''"
+      >
+      </p-dropdown>
+      <label for="device">Electrical Device</label>
+    </span>
+    <small *ngIf="isDeviceMandatory && !selectedDevice" class="text-red-500">The field is required.</small>
+  </div>
+</div>

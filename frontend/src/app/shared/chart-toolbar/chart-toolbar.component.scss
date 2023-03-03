@@ -1,0 +1,21 @@
+:host ::ng-deep {
+  .p-dropdown {
+    width: 14rem;
+  }
+
+  @media screen and (max-width: 1200px) {
+    .toolbar-height {
+      min-height: 14rem;
+    }
+
+    .full-height {
+      min-height: 18rem;
+    }
+  }
+
+  @media (min-width: 1201px) {
+    .toolbar-height {
+      min-height: unset;
+    }
+  }
+}

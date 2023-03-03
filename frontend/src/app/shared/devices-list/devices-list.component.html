@@ -1,0 +1,53 @@
+<p-table
+  #dt
+  [value]="devices"
+  [columns]="cols"
+  responsiveLayout="scroll"
+  [autoLayout]="true"
+  [rows]="10"
+  [globalFilterFields]="['name']"
+  [paginator]="true"
+  [rowsPerPageOptions]="rowsPerPageOptions"
+  [showCurrentPageReport]="cols.length > 2"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} devices"
+  [rowHover]="true"
+  dataKey="id"
+>
+  <ng-template pTemplate="caption">
+    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+      <h5 class="m-0">{{ listTitle }}</h5>
+      <span class="block mt-2 md:mt-0 p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Search..." />
+      </span>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th *ngFor="let col of cols" [pSortableColumn]="col.field">
+        {{ col.header }}
+        <p-sortIcon *ngIf="col.isSortable" [field]="col.field"></p-sortIcon>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-cols="columns" let-device>
+    <tr>
+      <td class="text-wrap" *ngFor="let col of cols">
+        <div [ngSwitch]="col.field">
+          <span *ngSwitchCase="'color'">
+            <button
+              *ngIf="deviceColors.get(device.name) as color"
+              pButton
+              pRipple
+              type="button"
+              [label]="color"
+              [style]="{ background: color, 'border-color': color }"
+              class="p-button-raised"
+            ></button>
+          </span>
+          <span *ngSwitchDefault>{{ device[col.field] }}</span>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

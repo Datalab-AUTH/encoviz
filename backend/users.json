@@ -1,0 +1,26 @@
+{
+  "0": {
+    "Username": "",
+    "Password": "",
+    "Role": "Customer",
+    "First name": "",
+    "Last name": "",
+    "Email": ""
+  },
+  "1": {
+    "Username": "",
+    "Password": "",
+    "Role": "Admin",
+    "First name": "",
+    "Last name": "",
+    "Email": ""
+  },
+  "2": {
+    "Username": "",
+    "Password": "",
+    "Role": "Provider",
+    "First name": "",
+    "Last name": "",
+    "Email": ""
+  }
+}

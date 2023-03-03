@@ -1,0 +1,73 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <p-messages [value]="seedInfoMsg" [enableService]="false"></p-messages>
+      <p-table
+        #dt
+        [value]="records$ | async"
+        [columns]="cols"
+        [responsiveLayout]="'stack'"
+        [lazy]="true"
+        (onLazyLoad)="onLazyLoad($event)"
+        [totalRecords]="totalRecords"
+        [loading]="loading"
+        [autoLayout]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} users"
+        [paginator]="true"
+        [rowsPerPageOptions]="[5, 10, 15]"
+        [rowHover]="true"
+        dataKey="id"
+      >
+        <p-confirmPopup></p-confirmPopup>
+        <ng-template pTemplate="caption">
+          <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+            <button pButton type="button" icon="pi pi-database" iconPos="left" label="Insert Data" (click)="confirm($event)"></button>
+            <span class="block mt-2 md:mt-0 p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input
+                class="w-full md:w-auto"
+                pInputText
+                type="text"
+                (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+                placeholder="Search for username..."
+                data-uia="client-search-text"
+              />
+            </span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th *ngFor="let col of cols">
+              {{ col.header }}
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user let-columns="columns">
+          <tr>
+            <td class="text-wrap" *ngFor="let col of columns">
+              <span class="p-column-title">{{ col.header }}</span>
+              <ng-container [ngSwitch]="col.field">
+                <span *ngSwitchCase="'createdTimestamp'">
+                  {{ user[col.field] | date: 'dd/MM/yyyy' }}
+                </span>
+                <span *ngSwitchCase="'emailVerified'" [ngStyle]="{ color: user[col.field] ? 'green' : 'red' }">
+                  <i class="text-xl pi" [class]="user[col.field] ? 'pi-check-circle' : 'pi-exclamation-circle'"></i>
+                </span>
+                <span *ngSwitchDefault>
+                  {{ user[col.field] }}
+                </span>
+              </ng-container>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage" let-columns>
+          <tr>
+            <td class="text-center font-bold" [attr.colspan]="columns.length">No users inserted on the system</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

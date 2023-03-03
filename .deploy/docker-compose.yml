@@ -1,0 +1,71 @@
+version: "3"
+
+services:
+    postgresdb:
+        container_name: "greendashboard.postgres"
+        build:
+            context: postgres/
+            dockerfile: DB.Dockerfile
+        environment:
+            POSTGRES_DB: GreenDashboard
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        ports:
+            - 5432:5432
+    idp:
+        container_name: "greendashboard.identity"
+        build:
+            context: ./keycloak/
+            dockerfile: IdP.Dockerfile
+        restart: on-failure:5
+        environment:
+            KEYCLOAK_ADMIN: ${KEYCLOAK_USER}
+            KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_PASSWORD}
+            KEYCLOAK_REDIRECT_URL: ${KEYCLOAK_REDIRECT_URL}
+            KEYCLOAK_ENV: ${KEYCLOAK_ENV}
+            PROXY_ADDRESS_FORWARDING: true
+            KC_DB: postgres
+            KC_DB_URL: jdbc:postgresql://greendashboard.postgres:5432/GreenDashboard?currentSchema=keycloak
+            KC_DB_USERNAME: postgres
+            KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
+            KC_HOSTNAME: ${UI_URL}
+            KC_HOSTNAME_PORT: ${UI_PORT}
+        ports:
+            - 8080:8080
+        volumes:
+            - ./keycloak/theme:/opt/jboss/keycloak/themes/green-dashboard
+        depends_on:
+            - postgresdb
+    mongodb:
+        container_name: "greendashboard.mongodb"
+        image: mongo
+        restart: on-failure:5
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+            MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+            MONGO_INITDB_DATABASE: heart
+        # ports:
+            # - 27017:27017
+    redis:
+        container_name: "greendashboard.redis"
+        image: redis
+        restart: on-failure:5
+    api:
+        container_name: "greendashboard.api"
+        build:
+            context: ../backend
+            dockerfile: API.Dockerfile
+        # ports:
+            # - 8000:8000
+    worker:
+        container_name: "greendashboard.worker"
+        build:
+            context: ../backend
+            dockerfile: worker.Dockerfile
+    ui:
+        container_name: "greendashboard.ui"
+        build:
+            context: ../frontend
+            dockerfile: UI.Dockerfile
+        ports:
+            - ${UI_PORT}:80
+    

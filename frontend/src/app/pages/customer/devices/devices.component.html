@@ -1,0 +1,12 @@
+<div class="grid" *ngIf="devices$ | async as devices">
+  <div class="col-12 lg:col-6">
+    <div class="card">
+      <app-devices-list [devices]="devices" [listTitle]="'My Devices'" [cols]="cols"> </app-devices-list>
+    </div>
+  </div>
+  <div class="col-12 lg:col-6">
+    <div class="card">
+      <app-devices-chart [devices]="devices"></app-devices-chart>
+    </div>
+  </div>
+</div>

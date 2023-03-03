@@ -1,0 +1,8 @@
+<p-messages></p-messages>
+<blockable-area [class]="'mt-4'" #chartArea>
+  <h5>{{ title }}</h5>
+  <ng-content></ng-content>
+</blockable-area>
+<p-blockUI [target]="chartArea" [blocked]="loading$ | async">
+  <i class="pi pi-spin pi-spinner" style="font-size: 3rem"></i>
+</p-blockUI>

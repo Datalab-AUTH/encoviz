@@ -1,0 +1,36 @@
+<div class="grid" *ngIf="data$ | async as data">
+  <div *ngFor="let unit of data" class="col-12 md:col-12 xl:col-4">
+    <div class="card overview-box-1">
+      <div class="card-header">
+        <h6>{{ unit.label }} Consumption</h6>
+      </div>
+      <ng-template [ngIf]="unit.allEntries?.length > 0" [ngIfElse]="noData">
+        <div class="overview-content overflow-x-auto">
+          <h4>{{ unit.totalConsumption | number: '.2-2' }} kWh</h4>
+          <div class="overview-graph">
+            <span
+              *ngFor="let consumption of unit.allEntries"
+              [style]="{ height: consumption.inPx + 'px' }"
+              pTooltip="{{ consumption.actual }}"
+            ></span>
+          </div>
+        </div>
+        <div class="overview-footer py-1" [ngClass]="{ down: !unit.increase && unit.percentage < 0 }">
+          <span
+            ><i
+              class="pi"
+              [ngClass]="{
+                'pi-arrow-up': unit.increase && unit.percentage > 0,
+                'pi-arrow-down': !unit.increase && unit.percentage < 0
+              }"
+            ></i>
+            <span>{{ unit.percentage }}</span> {{ unit.increase ? 'increase' : 'decrease' }} since last {{ unit.label | lowercase }}</span
+          >
+        </div>
+      </ng-template>
+      <ng-template #noData>
+        <p-messages [value]="noDataMsg" [enableService]="false"></p-messages>
+      </ng-template>
+    </div>
+  </div>
+</div>

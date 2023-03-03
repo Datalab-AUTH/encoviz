@@ -1,0 +1,12 @@
+<div class="grid p-fluid">
+  <div class="col-12">
+    <div class="card">
+      <app-chart-toolbar
+        [devices]="devices$ | async"
+        [users]="customers$ | async"
+        (updateChartOptions)="updateChart($event)"
+      ></app-chart-toolbar>
+      <app-combo-chart [data$]="data$" [selectedOptions]="selectedOptions"></app-combo-chart>
+    </div>
+  </div>
+</div>
